@@ -43,12 +43,13 @@ class PostListSerializer(ModelSerializer):
 class PostDetailSerializer(ModelSerializer):
     author = SerializerMethodField()
     image = SerializerMethodField()
+    count_seen = SerializerMethodField()
 
     # comments = SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ('author', 'title', 'about', 'body', 'image', 'create_at')
+        fields = ('author', 'title', 'about', 'body', 'image', 'create_at', 'count_seen')
 
     def get_author(self, obj):
         return str(obj.author.username)
@@ -60,11 +61,15 @@ class PostDetailSerializer(ModelSerializer):
             image = None
         return image
 
+    def count_seen(self):
+        post = Post.objects.get('count_seen')
+        post.count_seen += 1
+        post.save()
+
     # def get_comments(self, obj):
     #     c_qs = Comment.objects.filter_by_instance(obj)
     #     comments = CommentSerializer(c_qs, many=True).data
     #     return comments
-
 
 
 class CommentSerializer(ModelSerializer):
