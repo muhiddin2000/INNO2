@@ -13,7 +13,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now=True)
     update_at = models.DateTimeField(auto_now=True)
-    count_seen = models
+    count_seen = models.IntegerField(blank=True,default=0)
 
     def __str__(self):
         return self.title
@@ -36,7 +36,6 @@ class Comment(models.Model):
     messages = models.TextField()
     create_at = models.DateTimeField(auto_now=True)
     post_id = models.ForeignKey(Post, on_delete=models.CASCADE)
-
     # objects = CommentManager()
 
     def __str__(self):
