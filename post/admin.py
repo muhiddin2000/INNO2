@@ -7,7 +7,7 @@ from .models import Post, Comment
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['id', 'author', 'title', 'about', 'body', 'image', 'create_at']
+    list_display = ['id', 'author', 'title', 'about', 'body', 'image', 'create_at', 'count_seen']
 
 
 @admin.register(Comment)
