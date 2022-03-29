@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     # tashqi
     'rest_framework',
     'rest_framework.authtoken',
-    # 'dj_rest_auth',
-    # 'dj_rest_auth.registration',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
 
@@ -138,4 +138,5 @@ MEDIA_URL = "/media/"
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# AUTH_USER_MODEL=''
+
+AUTH_USER_MODEL = 'contact.CustomUser'

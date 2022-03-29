@@ -4,11 +4,11 @@ from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 class CustomUser(AbstractUser):
-    jinsi = models.BooleanField(default="erkak")
-    tel_raqam = models.CharField(max_length=20)
-    image = models.ImageField(upload_to='uploadUser')
-    kasbi = models.CharField(max_length=100)
-    uz_haqida = models.TextField()
+    jinsi = models.BooleanField(default=True, blank=True)
+    tel_raqam = models.CharField(max_length=20, blank=True)
+    image = models.ImageField(upload_to='uploadUser', blank=True)
+    kasbi = models.CharField(max_length=100, blank=True)
+    uz_haqida = models.TextField(null=True, blank=True)
     teligram = models.CharField(max_length=200, null=True, blank=True)
     twitter = models.CharField(max_length=200, null=True, blank=True)
     linkedin = models.CharField(max_length=200, null=True, blank=True)

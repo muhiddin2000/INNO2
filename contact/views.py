@@ -3,9 +3,9 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
 
-from .serializers import ContactSerializer, UserSerializer, User
+from .serializers import ContactSerializer, UserSerializer
 from rest_framework import permissions
-from .models import Contact
+from .models import Contact, CustomUser
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView, \
     RetrieveUpdateDestroyAPIView
 
@@ -26,22 +26,21 @@ class ContactCreate(CreateAPIView):
 
 class UserList(ListAPIView):
     permission_classes = (permissions.IsAdminUser,)
-    queryset = get_user_model().objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 
 # POST
 class UserDetail(RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAdminUser,)
-    queryset = get_user_model().objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
 
 
 class UserCreate(CreateAPIView):
-    # permission_classes = (permissions.IsAdminUser,)
-    queryset = User.objects.all()
+    permission_classes = (permissions.IsAdminUser,)
+    queryset = CustomUser.objects.all()
     serializer_class = UserSerializer
-
 
 # class UserLoginApiView(APIView):
 #     permission_classes = (permissions.AllowAny,)

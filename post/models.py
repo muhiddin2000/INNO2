@@ -1,16 +1,18 @@
 from django.db import models
-from django.contrib.auth.models import User
+from contact.models import CustomUser
 from django.contrib.contenttypes.models import ContentType
 
 
 # Create your models here.
+
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
     about = models.CharField(max_length=200)
     body = models.TextField()
     image = models.ImageField(upload_to='uploads')
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     create_at = models.DateTimeField(auto_now=True)
     update_at = models.DateTimeField(auto_now=True)
     count_seen = models.IntegerField(blank=True, default=0)
