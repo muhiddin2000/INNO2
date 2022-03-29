@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from dj_rest_auth import views
+from django.http import Http404
+
+from rest_framework import request, viewsets
 from rest_framework import filters
 from .serializers import PostSerializer, CommentSerializer, PostListSerializer, PostDetailSerializer
-from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, RetrieveUpdateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, DestroyAPIView, CreateAPIView, RetrieveUpdateAPIView, \
+    RetrieveAPIView, get_object_or_404
 from .permissions import IsAuthorOrReadOnl
 from .models import Post, Comment
 from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
+from rest_framework.response import Response
 
 
 # Create your views here.
@@ -17,19 +22,30 @@ class PostList(ListAPIView):
     search_fields = ['^title', 'body']
 
 
-# GET
-# class PostSearch(ListAPIView):
-#     queryset = Post.objects.all()
-#     serializer_class = PostSerializer
-#     filter_backends = [filters.SearchFilter]
-#     search_fields = ['^title', 'body']
+class PostPopularList(ListAPIView):
+    queryset = Post.objects.all().order_by('-count_seen')[:7]
+    serializer_class = PostListSerializer
 
 
-# PUT and GET
+class PostBannerList(ListAPIView):
+    queryset = Post.objects.all().order_by('-count_seen')[:3]
+    serializer_class = PostListSerializer
 
-class PostDetail(RetrieveAPIView):
-    queryset = Post.objects.all()
-    serializer_class = PostDetailSerializer
+
+class PostDetail(views.APIView):
+
+    def get(self, request, pk, *args, **kwargs):
+        obj = self.get_object(pk)
+        obj.count_seen = obj.count_seen + 1
+        obj.save()
+        serializer = PostDetailSerializer(obj)
+        return Response(serializer.data)
+
+    def get_object(self, pk):
+        try:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            raise Http404
 
 
 class PostUpdate(RetrieveUpdateAPIView):

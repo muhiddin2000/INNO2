@@ -1,8 +1,7 @@
 from rest_framework.serializers import (ModelSerializer, ValidationError, SerializerMethodField)
-from .models import Contact
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from .models import Contact,CustomUser
+# from django.contrib.auth import get_user_model
+# User = get_user_model()
 
 
 class ContactSerializer(ModelSerializer):
@@ -10,11 +9,11 @@ class ContactSerializer(ModelSerializer):
         model = Contact
         fields = ('id', 'name', 'email', 'subject', 'messages')
 
-
 class UserSerializer(ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username', 'email', 'password',)
+        model =CustomUser
+        fields = ('id', 'username', 'email', 'password','tel_raqam','iamge','kasbi','uz_haqida',
+                  'twitter','teligram','linkedin','facebook',)
 
     extra_kwargs = {"password":
                         {"write_only": True}

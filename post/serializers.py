@@ -22,12 +22,12 @@ class PostSerializer(ModelSerializer):
 
 
 class PostListSerializer(ModelSerializer):
-    author = SerializerMethodField()
+    # author = SerializerMethodField()
     image = SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ('title', 'about', 'image', 'author')
+        fields = ('title', 'about', 'image')
 
     def get_author(self, obj):
         return str(obj.author.username)
@@ -43,13 +43,12 @@ class PostListSerializer(ModelSerializer):
 class PostDetailSerializer(ModelSerializer):
     author = SerializerMethodField()
     image = SerializerMethodField()
-    count_seen = SerializerMethodField()
 
     # comments = SerializerMethodField()
 
     class Meta:
         model = Post
-        fields = ('author', 'title', 'about', 'body', 'image', 'create_at', 'count_seen')
+        fields = ('author', 'title', 'about', 'body', 'image', 'create_at')
 
     def get_author(self, obj):
         return str(obj.author.username)
@@ -61,11 +60,6 @@ class PostDetailSerializer(ModelSerializer):
             image = None
         return image
 
-    def count_seen(self):
-        post = Post.objects.get('count_seen')
-        post.count_seen += 1
-        post.save()
-
     # def get_comments(self, obj):
     #     c_qs = Comment.objects.filter_by_instance(obj)
     #     comments = CommentSerializer(c_qs, many=True).data
@@ -73,13 +67,13 @@ class PostDetailSerializer(ModelSerializer):
 
 
 class CommentSerializer(ModelSerializer):
-    reply_count = SerializerMethodField()
+    # reply_count = SerializerMethodField()
 
     class Meta:
         model = Comment
-        fields = ('id', 'name', 'messages', 'create_at', 'post_id', 'reply_count')
+        fields = ('id', 'name', 'messages', 'create_at', 'post_id',)
 
-    def get_reply_count(self, obj):
-        if obj.is_parent:
-            return obj.childen().count()
-        return 0
+    # def get_reply_count(self, obj):
+    #     if obj.is_parent:
+    #         return obj.childen().count()
+    #     return 0
